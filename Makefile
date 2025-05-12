@@ -22,3 +22,8 @@ debug:
 .PHONY: clean
 clean:
 	rm -rf build
+
+.PHONY: test
+test: build
+	cd build && \
+	ctest --output-on-failure

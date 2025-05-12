@@ -1,15 +1,45 @@
-cmake_minimum_required(VERSION 2.6)
-project(monitor)
+cmake_minimum_required(VERSION 3.14)
+project(monitor LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_BUILD_TYPE Debug)
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.13.0.zip
+)
+FetchContent_MakeAvailable(googletest)
+enable_testing()
 
 find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIRS})
+include_directories(${CURSES_INCLUDE_DIRS} include)
 
-include_directories(include)
-file(GLOB SOURCES "src/*.cpp")
-
-add_executable(monitor ${SOURCES})
-
-set_property(TARGET monitor PROPERTY CXX_STANDARD 17)
-target_link_libraries(monitor ${CURSES_LIBRARIES})
-# TODO: Run -Werror in CI.
+file(GLOB ALL_SRC "src/*.cpp")
+add_executable(monitor ${ALL_SRC})
 target_compile_options(monitor PRIVATE -Wall -Wextra)
+target_link_libraries(monitor PRIVATE ${CURSES_LIBRARIES})
+
+add_executable(format_tests
+  src/format.cpp
+  test/format_test.cpp
+)
+target_compile_options(format_tests PRIVATE -Wall -Wextra)
+target_link_libraries(format_tests
+  PRIVATE
+    GTest::gtest_main
+)
+include(GoogleTest)
+gtest_discover_tests(format_tests)
+
+add_executable(linux_parser_tests
+  src/linux_parser.cpp
+  test/linux_parser_test.cpp
+)
+target_compile_options(linux_parser_tests PRIVATE -Wall -Wextra)
+target_link_libraries(linux_parser_tests
+  PRIVATE
+    GTest::gtest_main
+)
+gtest_discover_tests(linux_parser_tests)
