@@ -54,3 +54,22 @@ TEST(LinuxParserTest, ProcessUpTimeReasonable) {
   EXPECT_GE(age, 0L);
   EXPECT_LE(age, sys);
 }
+
+TEST(LinuxParserTest, CommandNotEmpty) {
+  EXPECT_FALSE(LinuxParser::Command(getpid()).empty());
+}
+
+TEST(LinuxParserTest, RamFormat) {
+  std::string r = LinuxParser::Ram(getpid());
+  EXPECT_TRUE(std::all_of(r.begin(), r.end(), ::isdigit));
+}
+
+TEST(LinuxParserTest, UidNumeric) {
+  std::string u = LinuxParser::Uid(getpid());
+  EXPECT_TRUE(std::all_of(u.begin(), u.end(), ::isdigit));
+}
+
+TEST(LinuxParserTest, UserMatchesEnv) {
+  std::string u = LinuxParser::User(getpid());
+  EXPECT_EQ(u, getenv("USER"));
+}
