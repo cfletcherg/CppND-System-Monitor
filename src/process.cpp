@@ -23,8 +23,7 @@ int Process::Pid()
 float Process::CpuUtilization() const
 {
   auto total_time = LinuxParser::ActiveJiffies(pid_);
-  auto seconds    = LinuxParser::UpTime() - LinuxParser::UpTime(pid_);
-  if (seconds <= 0) return 0.0f;
+  auto seconds    = LinuxParser::UpTime(pid_);
   auto cpu_usage  = ((float(total_time) / sysconf(_SC_CLK_TCK)) / float(seconds));
   return cpu_usage;
 }
