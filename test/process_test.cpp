@@ -7,7 +7,7 @@ TEST(ProcessTest, CpuUtilizationRange) {
   int pid = getpid();
   Process me(pid);
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   float u = me.CpuUtilization();
   EXPECT_GE(u, 0.0f);
   EXPECT_LE(u, 1.0f);
