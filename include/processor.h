@@ -8,6 +8,9 @@ public:
 
   // TODO: Declare any necessary private members
 private:
+  long PrevIdle    = 0;
+  long PrevNonIdle = 0;
+  long PrevTotal   = 0;
 };
 
 #endif

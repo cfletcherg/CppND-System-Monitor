@@ -31,6 +31,14 @@ Processor& System::Cpu()
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes()
 {
+  auto processes = LinuxParser::Pids();
+  processes_     = {};
+  for (auto process : processes)
+  {
+    Process pid = Process(process);
+    processes_.emplace_back(pid);
+  }
+  std::sort(processes_.begin(), processes_.end());
   return processes_;
 }
 
@@ -55,17 +63,17 @@ std::string System::OperatingSystem()
 // TODO: Return the number of processes actively running on the system
 int System::RunningProcesses()
 {
-  return 0;
+  return LinuxParser::RunningProcesses();
 }
 
 // TODO: Return the total number of processes on the system
 int System::TotalProcesses()
 {
-  return 0;
+  return LinuxParser::TotalProcesses();
 }
 
 // TODO: Return the number of seconds since the system started running
 long int System::UpTime()
 {
-  return 0;
+  return LinuxParser::UpTime();
 }

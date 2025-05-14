@@ -43,3 +43,27 @@ target_link_libraries(linux_parser_tests
     GTest::gtest_main
 )
 gtest_discover_tests(linux_parser_tests)
+
+add_executable(process_tests
+  src/process.cpp
+  src/linux_parser.cpp
+  test/process_test.cpp
+)
+target_compile_options(process_tests PRIVATE -Wall -Wextra)
+target_link_libraries(process_tests
+  PRIVATE
+    GTest::gtest_main
+)
+gtest_discover_tests(process_tests)
+
+add_executable(processor_tests
+  src/processor.cpp
+  src/linux_parser.cpp
+  test/processor_test.cpp
+)
+target_compile_options(processor_tests PRIVATE -Wall -Wextra)
+target_link_libraries(processor_tests
+  PRIVATE
+    GTest::gtest_main
+)
+gtest_discover_tests(processor_tests)

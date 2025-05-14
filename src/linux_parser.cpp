@@ -268,7 +268,6 @@ string LinuxParser::Ram(int pid)
   {
     while (std::getline(stream, line))
     {
-      printf("pid: %i, line: %s\n", pid, line.c_str());
       std::istringstream linestream(line);
       linestream >> line_name >> ram;
       if (line_name == "VmSize:")
@@ -291,7 +290,6 @@ string LinuxParser::Uid(int pid)
   {
     while (std::getline(stream, line))
     {
-      printf("pid: %i, line: %s\n", pid, line.c_str());
       std::istringstream linestream(line);
       linestream >> line_name >> uid;
       if (line_name == "Uid:")

@@ -18,9 +18,15 @@ int Process::Pid()
 }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization()
+// Taken from
+// <https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599>
+float Process::CpuUtilization() const
 {
-  return 0;
+  auto total_time = LinuxParser::ActiveJiffies(pid_);
+  auto seconds    = LinuxParser::UpTime() - LinuxParser::UpTime(pid_);
+  if (seconds <= 0) return 0.0f;
+  auto cpu_usage  = ((float(total_time) / sysconf(_SC_CLK_TCK)) / float(seconds));
+  return cpu_usage;
 }
 
 // TODO: Return the command that generated this process
@@ -48,8 +54,7 @@ long int Process::UpTime()
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a [[maybe_unused]]) const
+bool Process::operator<(Process const& a) const
 {
-  return true;
+  return this->CpuUtilization() > a.CpuUtilization();
 }
